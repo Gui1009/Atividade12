@@ -19,12 +19,12 @@ body {
   }
   
   h1 {
-    color: #064e3b; /* verde escuro */
+    color: #064e3b; 
     margin-bottom: 0.5rem;
   }
   
   h2 {
-    color: #047857; /* verde médio */
+    color: #047857; 
     margin-bottom: 2rem;
   }
   
@@ -40,7 +40,7 @@ body {
   
   input:focus {
     outline: none;
-    border-color: #10b981; /* verde */
+    border-color: #10b981; 
   }
   
   button {
@@ -56,6 +56,6 @@ body {
   }
   
   button:hover {
-    background-color: #059669; /* verde mais escuro */
+    background-color: #059669; 
   }
   
