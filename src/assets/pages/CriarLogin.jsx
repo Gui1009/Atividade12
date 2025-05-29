@@ -19,7 +19,7 @@ function CriarLogin() {
 
   return (
     <div className="container">
-      <h1>TudoHard</h1>
+      <h1>TecnoLoja</h1>
       <h2>Criar Conta</h2>
       <form onSubmit={handleCriarConta}>
         <input
