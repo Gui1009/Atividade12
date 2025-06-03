@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, Routes, Route } from 'react-router-dom';
 
-import { produtos as produtosIniciais } from './produt'; 
-import CarrinhoLateral from './assets/CarrinhoLateral'; 
+import './App.css'; 
+import { produtos as produtosIniciais } from './produtos';
+import CarrinhoLateral from './assets/CarrinhoLateral';
 import ControleProduto from './assets/pages/ControleProduto';
 import CriarProduto from './assets/pages/CriarProduto';
 import EditarProduto from './assets/pages/EditarProduto';
@@ -41,7 +42,7 @@ function App() {
   const total = carrinho.reduce((soma, item) => soma + item.valor * item.quantidade, 0);
 
   const adicionarProduto = (produto) => {
-    const novoId = produtos.length > 0 ? produtos[produtos.length - 1].id + 1 : 1;
+    const novoId = produto.id || (produtos.length > 0 ? Math.max(...produtos.map(p => p.id)) + 1 : 1);
     setProdutos([...produtos, { ...produto, id: novoId }]);
   };
 
@@ -50,26 +51,32 @@ function App() {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Loja de Hardware</h1>
-      <button onClick={() => navigate('/produtos')} style={{ marginBottom: '20px',  }}>
-        Menu de Criação
-      </button>
+    <div className="app">
+      <div className="topo">
+        <h1>Loja de Hardware</h1>
+        
+      </div>
+
+     
 
       <Routes>
         <Route path="/" element={
           <>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+            <div className="grid-produtos">
               {produtos.map((produto) => (
-                <div key={produto.id} style={{ border: '1px solid #ccc', padding: '10px', width: '200px' }}>
-                  <img src={produto.imagem} alt={produto.nome} width="100%" />
-                  <h3 style={{ fontSize: '16px' }}>{produto.nome}</h3>
+                <div key={produto.id} className="card-produto">
+                  <img src={produto.imagem} alt={produto.nome} className="imagem-produto" />
+                  <h3 className="nome-produto">{produto.nome}</h3>
                   <p><strong>R$ {produto.valor.toFixed(2)}</strong></p>
+                  <p className="id-produto">ID: {produto.id}</p>
                   <button onClick={() => adicionarAoCarrinho(produto)}>Comprar</button>
                 </div>
               ))}
             </div>
-
+             <button className="botao-gerenciar" onClick={() => navigate('/home/produtos')}>
+        Gerenciador de Produtos
+      </button>
+<button className="botao-carrinho" onClick={() => setMostrarCarrinho(true)}>Carrinho</button>
             {mostrarCarrinho && (
               <CarrinhoLateral
                 itens={carrinho}
@@ -79,7 +86,9 @@ function App() {
                 onFinalizar={() => {
                   alert('Compra finalizada!');
                   setCarrinho([]);
+                  setMostrarCarrinho(false);
                 }}
+                fecharCarrinho={() => setMostrarCarrinho(false)}
               />
             )}
           </>
@@ -87,10 +96,9 @@ function App() {
 
         <Route path="/produtos" element={<ControleProduto produtos={produtos} setProdutos={setProdutos} />} />
         <Route path="/produtos/criar" element={<CriarProduto adicionarProduto={adicionarProduto} />} />
-        <Route path="/produtos/ler/:id" element={<LerProduto produtos={produtos} />} />
-        <Route path="/produtos/editar/:id" element={<EditarProduto produtos={produtos} atualizarProduto={atualizarProduto} />} />
-        <Route path="/produtos/remover/:id" element={<RemoverProduto produtos={produtos} setProdutos={setProdutos} />} />
-
+        <Route path="/produtos/ler" element={<LerProduto produtos={produtos} />} />
+        <Route path="/produtos/editar" element={<EditarProduto produtos={produtos} atualizarProduto={atualizarProduto} />} />
+        <Route path="/produtos/remover" element={<RemoverProduto produtos={produtos} setProdutos={setProdutos} />} />
       </Routes>
     </div>
   );
